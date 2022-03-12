@@ -9,6 +9,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,6 +35,7 @@ class StudentCourseRepositoryTest {
        courseRepository = new CourseRepository(sessionFactory);
        student = new Student(null,"ss","ss","ss","ss","ss","ss",null,null,20.5);
        course = new Course(null,"riazy",2,null);
+       studentCourse = new StudentCourse();
 
    }
 
@@ -53,23 +56,46 @@ class StudentCourseRepositoryTest {
         courseRepository.save(course);
         studentCourse.setStudent(student);
         studentCourse.setCourse(course);
-       //Act
+       // student.setStudentCourses(new HashSet<>(Arrays.asList(studentCourse)));
+
+      //Act
+      // studentRepository.upDate(student);
        studentCourseRepository.save(studentCourse);
        //Assert
+      assertNotNull(studentCourseRepository.findByStudentId(student.getId()));
 
-       assertNotNull(studentCourseRepository.findByStudentId(student.getId()));
 
    }
     @Test
     void findByStudentId() {
 
        //Arrange
-
+        studentRepository.save(student);
+        courseRepository.save(course);
+        studentCourse.setStudent(student);
+        studentCourse.setCourse(course);
+        studentCourseRepository.save(studentCourse);
         //Act
-       List<StudentCourse> studentCourse = studentCourseRepository.findByStudentId(2);
+       List<StudentCourse> studentCourse = studentCourseRepository.findByStudentId(student.getId());
 
         //Assert
         assertEquals(1,studentCourse.size());
+    }
+
+    @Test
+    void delete()
+    {
+        // Arrange
+        studentRepository.save(student);
+        courseRepository.save(course);
+        studentCourse.setStudent(student);
+        studentCourse.setCourse(course);
+        studentCourseRepository.save(studentCourse);
+        //Act
+        studentCourseRepository.delete(studentCourse);
+        //assert
+        assertTrue(studentCourseRepository.findByStudentId(student.getId()).isEmpty());
+
     }
 
     @AfterEach
