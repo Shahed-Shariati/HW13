@@ -482,6 +482,11 @@ public class Application {
                professor.getProfessorCourses().add(professorCourse);
                professorService.upDate(professor);
                System.out.println("Success");
+                System.out.println("do you want continue? y/n");
+                String input = getUserInput();
+                if(input.equalsIgnoreCase("N")){
+                    return;
+                }
             }catch (NumberFormatException e){
                 System.out.println("Id is wrong");
             }
@@ -562,7 +567,8 @@ public class Application {
 
     private void professorSalary(Professor professor){
        Double salary =  professorService.salary(professor);
-        System.out.println(salary);
+        System.out.printf( "%.2f", salary);
+        System.out.println();
 
     }
 
